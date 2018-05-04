@@ -1019,8 +1019,10 @@ bool NavEKF3::getOriginLLH(int8_t instance, struct Location &loc) const
 {
     if (instance < 0 || instance >= num_cores) instance = primary;
     if (!core) {
+        //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Returning false from core");
         return false;
     }
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Returning false from core getOriginLLH(loc)");
     return core[instance].getOriginLLH(loc);
 }
 

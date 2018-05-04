@@ -50,6 +50,14 @@ bool Copter::set_home_to_current_location(bool lock) {
 //  returns true if home location set successfully
 bool Copter::set_home(const Location& loc, bool lock)
 {
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "set_home!!");
     // check location is valid
     if (loc.lat == 0 && loc.lng == 0) {
         return false;

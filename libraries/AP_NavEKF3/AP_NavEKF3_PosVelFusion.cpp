@@ -916,11 +916,13 @@ void NavEKF3_core::selectHeightForFusion()
 */
 void NavEKF3_core::FuseBodyVel()
 {
+
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Fusing Velocity");
     Vector24 H_VEL;
     Vector3f bodyVelPred;
 
     // Copy required states to local variable names
-    float q0  = stateStruct.quat[0];
+    float q0 = stateStruct.quat[0];
     float q1 = stateStruct.quat[1];
     float q2 = stateStruct.quat[2];
     float q3 = stateStruct.quat[3];

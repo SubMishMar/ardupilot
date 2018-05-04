@@ -1412,12 +1412,20 @@ void GCS_MAVLINK::send_autopilot_version(uint8_t major_version, uint8_t minor_ve
  */
 void GCS_MAVLINK::send_local_position(const AP_AHRS &ahrs) const
 {
+
     Vector3f local_position, velocity;
     if (!ahrs.get_relative_position_NED_home(local_position) ||
         !ahrs.get_velocity_NED(velocity)) {
         // we don't know the position and velocity
+        //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "ahrs.get_relative_position_NED_home:%d", ahrs.get_relative_position_NED_home(local_position));
+        //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "ahrs.get_velocity_NED:%d", ahrs.get_velocity_NED(velocity));
         return;
     }
+    else
+    {
+        //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "we know the position and velocity");
+    }
+
 
     mavlink_msg_local_position_ned_send(
         chan,
@@ -1428,6 +1436,7 @@ void GCS_MAVLINK::send_local_position(const AP_AHRS &ahrs) const
         velocity.x,
         velocity.y,
         velocity.z);
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Sent Message to ROS");
 }
 
 /*

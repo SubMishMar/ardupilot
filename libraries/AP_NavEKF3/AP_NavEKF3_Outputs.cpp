@@ -1,5 +1,5 @@
 #include <AP_HAL/AP_HAL.h>
-
+#include <GCS_MAVLink/GCS.h>
 #if HAL_CPU_CLASS >= HAL_CPU_CLASS_150
 
 #include "AP_NavEKF3.h"
@@ -240,6 +240,7 @@ bool NavEKF3_core::getPosNE(Vector2f &posNE) const
 {
     // There are three modes of operation, absolute position (GPS fusion), relative position (optical flow fusion) and constant position (no position estimate available)
     if (PV_AidingMode != AID_NONE) {
+    	//GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "PV_AidingMode != AID_NONE");
         // This is the normal mode of operation where we can use the EKF position states
         // correct for the IMU offset (EKF calculations are at the IMU)
         posNE.x = outputDataNew.position.x + posOffsetNED.x;
@@ -269,6 +270,7 @@ bool NavEKF3_core::getPosNE(Vector2f &posNE) const
             }
         } else {
             // If the origin has not been set, then we have no means of providing a relative position
+            //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Origin has not been set");
             posNE.x = 0.0f;
             posNE.y = 0.0f;
             return false;
@@ -385,6 +387,7 @@ bool NavEKF3_core::getOriginLLH(struct Location &loc) const
             loc.alt = (int32_t)(100.0f * (float)ekfGpsRefHgt);
         }
     }
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "validOrigin: %d", validOrigin);
     return validOrigin;
 }
 

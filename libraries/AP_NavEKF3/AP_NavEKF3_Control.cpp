@@ -414,10 +414,22 @@ bool NavEKF3_core::readyToUseOptFlow(void) const
 bool NavEKF3_core::readyToUseBodyOdm(void) const
 {
     // We need stable roll/pitch angles and gyro bias estimates but do not need the yaw angle aligned to use these measurements
-    return (imuSampleTime_ms - bodyOdmMeasTime_ms < 200)
-            && bodyOdmDataNew.velErr < 1.0f
-            && tiltAlignComplete
-            && delAngBiasLearned;
+    //return (imuSampleTime_ms - bodyOdmMeasTime_ms < 200)
+     //       && bodyOdmDataNew.velErr < 1.0f
+     //       && tiltAlignComplete
+      //      && delAngBiasLearned;
+
+    // Check for fresh visual odometry data that meets the accuracy required for alignment
+    bool visoDataGood = (imuSampleTime_ms - bodyOdmMeasTime_ms < 200) && (bodyOdmDataNew.velErr < 1.0f);
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "imuSampleTime_ms : %3.1f", (double)imuSampleTime_ms);
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "bodyOdmMeasTime_ms : %3.1f", (double)bodyOdmMeasTime_ms);
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "bodyOdmDataNew.velErr : %3.1f", (double)bodyOdmDataNew.velErr);
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "visoDataGood : %d", visoDataGood);
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "tiltAlignComplete : %d", tiltAlignComplete);
+   // GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "delAngBiasLearned : %d", delAngBiasLearned);
+    // We require stable roll/pitch angles and gyro bias estimates but do not need the yaw angle aligned to use odometry measurements
+    // becasue they are in a body frame of reference
+    return visoDataGood && tiltAlignComplete && delAngBiasLearned;
 }
 
 // return true if the filter to be ready to use gps
@@ -452,6 +464,17 @@ bool NavEKF3_core::assume_zero_sideslip(void) const
 // set the LLH location of the filters NED origin
 bool NavEKF3_core::setOriginLLH(const Location &loc)
 {
+
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Setting Origin!!");
     if (PV_AidingMode == AID_ABSOLUTE) {
         return false;
     }

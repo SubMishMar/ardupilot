@@ -587,6 +587,8 @@ bool AP_AHRS_NavEKF::set_origin(const Location &loc)
     bool ret2 = EKF2.setOriginLLH(loc);
     bool ret3 = EKF3.setOriginLLH(loc);
 
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "EKF2.setOriginLLH(loc)%d", ret2);
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "EKF3.setOriginLLH(loc)%d", ret3);
     // return success if active EKF's origin was set
     switch (active_EKF_type()) {
     case EKF_TYPE2:
@@ -760,8 +762,11 @@ bool AP_AHRS_NavEKF::get_relative_position_NED_origin(Vector3f &vec) const
     }
 
     case EKF_TYPE3: {
+
             Vector2f posNE;
             float posD;
+            //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "EKF3.getPosNE(-1,posNE) %d", EKF3.getPosNE(-1,posNE));
+            //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "EKF3.getPosD(-1,posD) %d", EKF3.getPosD(-1,posD));
             if (EKF3.getPosNE(-1,posNE) && EKF3.getPosD(-1,posD)) {
                 // position is valid
                 vec.x = posNE.x;
@@ -769,6 +774,7 @@ bool AP_AHRS_NavEKF::get_relative_position_NED_origin(Vector3f &vec) const
                 vec.z = posD;
                 return true;
             }
+            
             return false;
         }
 
@@ -792,9 +798,15 @@ bool AP_AHRS_NavEKF::get_relative_position_NED_home(Vector3f &vec) const
 {
     Location originLLH;
     Vector3f originNED;
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "get_relative_position_NED_origin(originNED): %d", get_relative_position_NED_origin(originNED));
+    //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "get_origin: %d", get_origin(originLLH));
     if (!get_relative_position_NED_origin(originNED) ||
         !get_origin(originLLH)) {
         return false;
+    }
+    else
+    {
+        //GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Return True");
     }
 
     Vector3f offset = location_3d_diff_NED(originLLH, _home);
@@ -1421,6 +1433,7 @@ bool AP_AHRS_NavEKF::get_origin(Location &ret) const
 
     case EKF_TYPE3:
         if (!EKF3.getOriginLLH(-1,ret)) {
+        	//GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Coundn't get origin LLH");
             return false;
         }
         return true;

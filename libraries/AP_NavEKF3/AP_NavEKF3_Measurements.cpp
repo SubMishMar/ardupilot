@@ -122,10 +122,10 @@ void NavEKF3_core::writeBodyFrameOdom(float quality, const Vector3f &delPos, con
 
     // simple model of accuracy
     // TODO move this calculation outside of EKF into the sensor driver
-    const float minVelErr = 0.5f;
-    const float maxVelErr = 10.0f;
+    const float minVelErr = 0.1f;
+    const float maxVelErr = 0.9f;
     bodyOdmDataNew.velErr = minVelErr + (maxVelErr - minVelErr) * (1.0f - 0.01f * quality);
-
+//GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Quality : %3.1f", (double) quality);
     storedBodyOdm.push(bodyOdmDataNew);
 
 }
