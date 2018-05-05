@@ -677,6 +677,7 @@ void NavEKF3_core::UpdateStrapdownEquationsNED()
 */
 void NavEKF3_core::calcOutputStates()
 {
+	//GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Calculating Output States");
     // apply corrections to the IMU data
     Vector3f delAngNewCorrected = imuDataNew.delAng;
     Vector3f delVelNewCorrected = imuDataNew.delVel;
